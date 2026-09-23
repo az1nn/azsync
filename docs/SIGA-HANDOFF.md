@@ -15,18 +15,21 @@ Do not use another repository's SIGA state as canonical.
 - Verified baseline HEAD: `78180dcde798a28956a87ba6033534a27b0c7485`
 - Baseline commit: `fix: enable GitHub Pages from deployment workflow`
 - Active SIGA branch: `chore/siga-protocol`
-- Last verified implementation commit before this handoff: `a8ffb30e33f3398eac74cfa79212f5fb69126b43`
+- PR: #2 — open and mergeable at the latest verification
+- Verified PR head before this handoff-only update: `b70535876ea670f91768884e7e9769c07db0d4aa`
 - Existing product PR: #1 — merged
-- Classification for this continuation: **RESUME**
+- Current classification: **WATCH**
 
-## Why RESUME
+## Transition recorded in this run
 
-The AZ-Sync Grimoire V0.1 is already present on `master`, but the repository-local continuation protocol requested for ongoing work was not persisted in the repository. Both expected canonical artifacts were absent before this branch:
+The run started as **RESUME** because the repository-local SIGA artifacts were absent.
+
+That unfinished work has now been persisted:
 
 - `.agents/skills/siga/SKILL.md`
 - `docs/SIGA-HANDOFF.md`
 
-The first continuation priority is therefore to finish SIGA persistence before unrelated feature expansion.
+A focused pull request was then opened, which moved the continuation into **WATCH** because CI became the active external gate.
 
 ## Completed in this work unit
 
@@ -35,6 +38,7 @@ The first continuation priority is therefore to finish SIGA persistence before u
 - Encoded RESUME / WATCH / ADVANCE classification.
 - Added concurrency protections for stale refs, overlapping branches/PRs, non-force writes, and post-write verification.
 - Established this repository handoff as the only persistent SIGA state for AZ-Sync.
+- Opened PR #2 from `chore/siga-protocol` to `master`.
 
 ## Product state observed during reconciliation
 
@@ -44,22 +48,30 @@ The first continuation priority is therefore to finish SIGA persistence before u
 - Blind target flow requires receiver logging before reveal.
 - GitHub Pages workflow is configured for pushes to `master`.
 - Vite base is `/azsync/`.
-- No open product PR was observed at the start of this SIGA run.
+- PR #1 for the Grimoire V0 bootstrap is merged.
 
 ## Validation / gates
 
-At the reconciliation baseline, GitHub's combined commit-status endpoint reported no legacy statuses for the latest `master` commit. The available commit-workflow lookup only exposes pull-request-triggered runs and therefore did not establish the state of the push-triggered Pages deployment.
+At PR head `b70535876ea670f91768884e7e9769c07db0d4aa`:
 
-For this SIGA work unit, validation should be taken from the pull request created from `chore/siga-protocol` and re-checked against its current head before merge.
+- PR #2 state: open
+- mergeable: true
+- reviews: none
+- unresolved review threads: none
+- pull-request CI workflow: queued
+- legacy combined commit statuses: none
+
+This handoff update creates a newer branch commit, so the next SIGA run must re-read the current PR head and CI run rather than treating the values above as current truth.
 
 ## Next action
 
-1. Open a focused PR from `chore/siga-protocol` to `master`.
-2. Reconcile the PR head and CI/check state.
-3. If checks are still running, classify the next SIGA as **WATCH**.
-4. If checks are green and no review/merge gate remains, merge according to repository policy.
-5. On the next SIGA after merge, re-read `master`, this handoff, roadmap/spec state, and classify the next product continuation.
+1. Re-read PR #2 and its current head.
+2. Inspect the CI workflow for that exact head.
+3. If CI is queued or running, remain **WATCH** and do not create unrelated product work.
+4. If CI fails, inspect the failing job and **RESUME** with the smallest corrective change.
+5. If CI succeeds and no other required gate remains, merge PR #2 according to repository policy.
+6. After merge, re-read `master`, this handoff, roadmap/spec state, and classify the next product continuation as **ADVANCE** only if all prior work is verifiably complete.
 
 ## Concurrency note
 
-The verified baseline is historical after any later write. On every new SIGA run, re-read the current refs and compare before mutating. Do not assume this SHA remains current.
+The verified baseline and recorded PR head are point-in-time observations. On every SIGA run, re-read current refs before mutation. Never overwrite unrelated concurrent changes or assume an old SHA is still current.
