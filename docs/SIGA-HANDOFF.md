@@ -12,35 +12,40 @@ Do not use another repository's SIGA state as canonical.
 
 - Repository: `az1nn/azsync`
 - Default branch: `master`
-- Verified baseline HEAD: `78180dcde798a28956a87ba6033534a27b0c7485`
-- Baseline commit: `fix: enable GitHub Pages from deployment workflow`
-- Active SIGA branch: `chore/siga-protocol`
-- PR: #2 — open and mergeable at the latest verification
-- Verified PR head before this handoff-only update: `b70535876ea670f91768884e7e9769c07db0d4aa`
-- Existing product PR: #1 — merged
-- Current classification: **WATCH**
+- Verified baseline HEAD after PR #2 merge: `ecb478854a26c26b73685869cb6a5c30dfb2b0fe`
+- Baseline commit: `Merge pull request #2 from az1nn/chore/siga-protocol`
+- PR #2: merged
+- PR #2 former head: `82e6c739fd568bd1b1243fe0ac354868eb42dbd8`
+- PR #2 CI at former head: completed / success
+- Open PRs at latest verification: none
+- Current classification: **ADVANCE**
 
 ## Transition recorded in this run
 
-The run started as **RESUME** because the repository-local SIGA artifacts were absent.
+This SIGA run began by reconciling the repository-local handoff and active PR #2.
 
-That unfinished work has now been persisted:
+The PR was still open and mergeable, its exact head was unchanged, it was 3 commits ahead / 0 behind `master`, there were no reviews or unresolved review threads, and CI run #9 had completed successfully.
+
+After a final concurrency check, PR #2 was merged using expected-head protection.
+
+The repository-local SIGA protocol is now present on `master`:
 
 - `.agents/skills/siga/SKILL.md`
 - `docs/SIGA-HANDOFF.md`
 
-A focused pull request was then opened, which moved the continuation into **WATCH** because CI became the active external gate.
-
 ## Completed in this work unit
 
-- Added repository-local SIGA skill at `.agents/skills/siga/SKILL.md`.
-- Encoded VERIFY-FIRST reconciliation.
-- Encoded RESUME / WATCH / ADVANCE classification.
-- Added concurrency protections for stale refs, overlapping branches/PRs, non-force writes, and post-write verification.
-- Established this repository handoff as the only persistent SIGA state for AZ-Sync.
-- Opened PR #2 from `chore/siga-protocol` to `master`.
+- Verified repository identity, default branch, current refs, PR state, review state, and CI for PR #2.
+- Confirmed PR #2 head `82e6c739fd568bd1b1243fe0ac354868eb42dbd8`.
+- Confirmed CI completed successfully for that exact head.
+- Confirmed no unresolved reviews or review threads.
+- Confirmed the branch was not behind `master`.
+- Merged PR #2 into `master`.
+- Re-read `master` after merge.
+- Verified there are currently no open PRs.
+- Searched the default branch for roadmap, spec, and TODO artifacts; none were found.
 
-## Product state observed during reconciliation
+## Product state observed
 
 - React + TypeScript + Vite application exists.
 - Three.js / React Three Fiber visual scene exists.
@@ -49,29 +54,28 @@ A focused pull request was then opened, which moved the continuation into **WATC
 - GitHub Pages workflow is configured for pushes to `master`.
 - Vite base is `/azsync/`.
 - PR #1 for the Grimoire V0 bootstrap is merged.
+- PR #2 for repository-local SIGA is merged.
 
-## Validation / gates
+## Decision
 
-At PR head `b70535876ea670f91768884e7e9769c07db0d4aa`:
+The previous SIGA unit is verifiably complete, so the repository is classified as **ADVANCE**.
 
-- PR #2 state: open
-- mergeable: true
-- reviews: none
-- unresolved review threads: none
-- pull-request CI workflow: queued
-- legacy combined commit statuses: none
+However, there is no repository-backed roadmap/spec/TODO defining the next product feature. Under VERIFY-FIRST, the next implementation unit must not be invented from chat or memory.
 
-This handoff update creates a newer branch commit, so the next SIGA run must re-read the current PR head and CI run rather than treating the values above as current truth.
+## Exact next action
 
-## Next action
+Create and persist the first repository-backed product planning artifact for the next AZ-Sync increment before implementing new product code.
 
-1. Re-read PR #2 and its current head.
-2. Inspect the CI workflow for that exact head.
-3. If CI is queued or running, remain **WATCH** and do not create unrelated product work.
-4. If CI fails, inspect the failing job and **RESUME** with the smallest corrective change.
-5. If CI succeeds and no other required gate remains, merge PR #2 according to repository policy.
-6. After merge, re-read `master`, this handoff, roadmap/spec state, and classify the next product continuation as **ADVANCE** only if all prior work is verifiably complete.
+That planning unit should:
+
+1. define the next version/increment;
+2. capture scope and non-goals;
+3. enumerate the next coherent features or experiments;
+4. define acceptance criteria and validation gates;
+5. establish an ordered roadmap that later SIGA runs can advance without relying on chat memory.
+
+Until that artifact exists, do not start unrelated product implementation under SIGA.
 
 ## Concurrency note
 
-The verified baseline and recorded PR head are point-in-time observations. On every SIGA run, re-read current refs before mutation. Never overwrite unrelated concurrent changes or assume an old SHA is still current.
+All SHAs above are point-in-time observations. On every SIGA run, re-read current refs before mutation. Never overwrite unrelated concurrent changes or assume an old SHA is still current.
