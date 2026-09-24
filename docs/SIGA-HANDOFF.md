@@ -12,70 +12,82 @@ Do not use another repository's SIGA state as canonical.
 
 - Repository: `az1nn/azsync`
 - Default branch: `master`
-- Verified baseline HEAD after PR #2 merge: `ecb478854a26c26b73685869cb6a5c30dfb2b0fe`
-- Baseline commit: `Merge pull request #2 from az1nn/chore/siga-protocol`
-- PR #2: merged
-- PR #2 former head: `82e6c739fd568bd1b1243fe0ac354868eb42dbd8`
-- PR #2 CI at former head: completed / success
-- Open PRs at latest verification: none
-- Current classification: **ADVANCE**
+- Verified base HEAD before Spec Kit work: `5d2612bbd6f2af3df237f9295cf45515493dea70`
+- Active branch: `chore/spec-kit-bootstrap`
+- Bootstrap commit before this handoff update: `7b0215859ed24cc9ebc4d238a49b033af13a3edd`
+- PR: #3 — `chore: bootstrap Spec Kit v1.0.11`
+- Current classification: **WATCH**
 
 ## Transition recorded in this run
 
-This SIGA run began by reconciling the repository-local handoff and active PR #2.
+The previous state was **ADVANCE** with no repository-backed roadmap/specification for the next product increment.
 
-The PR was still open and mergeable, its exact head was unchanged, it was 3 commits ahead / 0 behind `master`, there were no reviews or unresolved review threads, and CI run #9 had completed successfully.
+The user explicitly selected Spec Kit as the next infrastructure unit. The repository was reconciled before mutation, and no open pull requests existed.
 
-After a final concurrency check, PR #2 was merged using expected-head protection.
-
-The repository-local SIGA protocol is now present on `master`:
-
-- `.agents/skills/siga/SKILL.md`
-- `docs/SIGA-HANDOFF.md`
+A dedicated branch was created from the exact verified `master` head. GitHub Spec Kit v1.0.11 was then bootstrapped using the official Codex skills layout.
 
 ## Completed in this work unit
 
-- Verified repository identity, default branch, current refs, PR state, review state, and CI for PR #2.
-- Confirmed PR #2 head `82e6c739fd568bd1b1243fe0ac354868eb42dbd8`.
-- Confirmed CI completed successfully for that exact head.
-- Confirmed no unresolved reviews or review threads.
-- Confirmed the branch was not behind `master`.
-- Merged PR #2 into `master`.
-- Re-read `master` after merge.
-- Verified there are currently no open PRs.
-- Searched the default branch for roadmap, spec, and TODO artifacts; none were found.
+- Pinned Spec Kit to upstream `github/spec-kit@v1.0.11`.
+- Added all 10 core Codex-compatible Spec Kit skills under `.agents/skills/speckit-*/SKILL.md`.
+- Preserved the existing repository-local `.agents/skills/siga/SKILL.md`.
+- Added official Bash workflow scripts under `.specify/scripts/bash/`.
+- Added specification, constitution, plan, checklist, and task templates under `.specify/templates/`.
+- Added the bundled Spec Kit SDD workflow and workflow registry.
+- Added Codex integration metadata and SHA-256 manifests.
+- Ratified `.specify/memory/constitution.md` for AZ-Sync.
+- Added `docs/SPEC-KIT.md`.
+- Updated the README with the Spec-Driven Development entry point.
+- Opened PR #3.
 
-## Product state observed
+## AZ-Sync constitution invariants
 
-- React + TypeScript + Vite application exists.
-- Three.js / React Three Fiber visual scene exists.
-- Four experimental practice protocols exist.
-- Blind target flow requires receiver logging before reveal.
-- GitHub Pages workflow is configured for pushes to `master`.
-- Vite base is `/azsync/`.
-- PR #1 for the Grimoire V0 bootstrap is merged.
-- PR #2 for repository-local SIGA is merged.
+The ratified constitution requires:
 
-## Decision
+1. specification before non-trivial implementation;
+2. explicit separation of subjective experience from evidential claims;
+3. receiver logging before hidden-target reveal;
+4. reproducible experimental records;
+5. immersive UX that does not suggest or leak target answers;
+6. small, independently verifiable increments with build validation.
 
-The previous SIGA unit is verifiably complete, so the repository is classified as **ADVANCE**.
+## Spec Kit operating model
 
-However, there is no repository-backed roadmap/spec/TODO defining the next product feature. Under VERIFY-FIRST, the next implementation unit must not be invented from chat or memory.
+Canonical flow:
+
+1. `$speckit-specify`
+2. `$speckit-clarify`
+3. `$speckit-plan`
+4. `$speckit-checklist`
+5. `$speckit-tasks`
+6. `$speckit-analyze`
+7. `$speckit-implement`
+8. `$speckit-converge`
+
+SIGA remains the verify-first continuation layer around this flow.
+
+## Validation / gates
+
+Before this handoff-only update:
+
+- branch vs `master`: 1 commit ahead / 0 behind;
+- changed files: 32;
+- application/product source changes: none;
+- PR #3: open;
+- pull-request CI for the final handoff HEAD: pending re-read after this commit.
+
+Because this handoff update changes the PR head, any CI result from the previous head is historical only.
 
 ## Exact next action
 
-Create and persist the first repository-backed product planning artifact for the next AZ-Sync increment before implementing new product code.
-
-That planning unit should:
-
-1. define the next version/increment;
-2. capture scope and non-goals;
-3. enumerate the next coherent features or experiments;
-4. define acceptance criteria and validation gates;
-5. establish an ordered roadmap that later SIGA runs can advance without relying on chat memory.
-
-Until that artifact exists, do not start unrelated product implementation under SIGA.
+1. Re-read PR #3 and its exact current head.
+2. Inspect CI for that exact head.
+3. If CI is queued/running, remain **WATCH**.
+4. If CI fails, classify **RESUME** and apply the smallest corrective change.
+5. If CI succeeds and no other required gate remains, merge PR #3 with expected-head protection.
+6. After merge, re-read `master` and classify **ADVANCE**.
+7. The next product unit after successful Spec Kit merge is to create the first repository-backed AZ-Sync product specification with `$speckit-specify`; do not start product implementation before that spec exists.
 
 ## Concurrency note
 
-All SHAs above are point-in-time observations. On every SIGA run, re-read current refs before mutation. Never overwrite unrelated concurrent changes or assume an old SHA is still current.
+All SHAs are point-in-time observations. Re-read current refs before any mutation. Never force-push, overwrite unrelated changes, or assume an earlier CI result applies to a newer PR head.
