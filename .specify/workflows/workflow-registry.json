@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "workflows": {
+    "speckit": {
+      "name": "Full SDD Cycle",
+      "version": "1.0.1",
+      "source": "bundled",
+      "enabled": true
+    }
+  }
+}

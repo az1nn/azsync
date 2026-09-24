@@ -30,3 +30,9 @@ npm run build
 ## Deployment
 
 Pushes to `master` run the GitHub Pages workflow. Repository Pages settings must use **GitHub Actions** as the source.
+
+## Spec-Driven Development
+
+AZ-Sync uses GitHub Spec Kit v1.0.11 with the Codex skills integration. Project governance lives in `.specify/memory/constitution.md`; workflow details are documented in `docs/SPEC-KIT.md`.
+
+Start a new product increment with `$speckit-specify`. Use `SIGA` to reconcile real repository state before resuming or advancing work.
