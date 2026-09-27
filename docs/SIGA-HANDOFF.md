@@ -12,81 +12,83 @@ Do not use another repository's SIGA state as canonical.
 
 - Repository: `az1nn/azsync`
 - Default branch: `master`
-- Verified base HEAD before Spec Kit work: `5d2612bbd6f2af3df237f9295cf45515493dea70`
-- Active branch: `chore/spec-kit-bootstrap`
-- Bootstrap commit before this handoff update: `7b0215859ed24cc9ebc4d238a49b033af13a3edd`
-- PR: #3 — `chore: bootstrap Spec Kit v1.0.11`
+- Verified `master` HEAD after Spec Kit merge: `18ddaec6d91be6cd928e425945d9751938e196cd`
+- PR #3: merged at `18ddaec6d91be6cd928e425945d9751938e196cd`
+- PR #3 exact head CI: completed / success
+- Active branch: `001-session-records`
+- Spec branch head before this handoff update: `205565533db640aa7e904071fed3628e011613d7`
+- PR: #4 — `spec: define reproducible session records`
 - Current classification: **WATCH**
 
 ## Transition recorded in this run
 
-The previous state was **ADVANCE** with no repository-backed roadmap/specification for the next product increment.
+The previous handoff was stale: it recorded PR #3 as open/WATCH, but real repository state showed PR #3 already merged with successful CI and no open pull requests.
 
-The user explicitly selected Spec Kit as the next infrastructure unit. The repository was reconciled before mutation, and no open pull requests existed.
+That completed the Spec Kit bootstrap unit, so SIGA classified the repository as **ADVANCE**.
 
-A dedicated branch was created from the exact verified `master` head. GitHub Spec Kit v1.0.11 was then bootstrapped using the official Codex skills layout.
+The next repository-backed action named by the previous handoff was to create the first AZ-Sync product specification with `$speckit-specify`. The current product surface and constitution were then inspected to choose a non-invented scope.
+
+The selected first increment closes a concrete repository-backed gap: the constitution requires reproducible experimental records, while V0.1 currently holds round state and receiver input only in the active UI flow.
 
 ## Completed in this work unit
 
-- Pinned Spec Kit to upstream `github/spec-kit@v1.0.11`.
-- Added all 10 core Codex-compatible Spec Kit skills under `.agents/skills/speckit-*/SKILL.md`.
-- Preserved the existing repository-local `.agents/skills/siga/SKILL.md`.
-- Added official Bash workflow scripts under `.specify/scripts/bash/`.
-- Added specification, constitution, plan, checklist, and task templates under `.specify/templates/`.
-- Added the bundled Spec Kit SDD workflow and workflow registry.
-- Added Codex integration metadata and SHA-256 manifests.
-- Ratified `.specify/memory/constitution.md` for AZ-Sync.
-- Added `docs/SPEC-KIT.md`.
-- Updated the README with the Spec-Driven Development entry point.
-- Opened PR #3.
+- Verified PR #3 merged and its exact head CI completed successfully.
+- Verified `master` at `18ddaec6d91be6cd928e425945d9751938e196cd`.
+- Verified there were no open PRs before starting the new unit.
+- Read the repository-local SIGA and `speckit-specify` skills from `master`.
+- Read the Spec Kit constitution, active spec template, init options, current app flow, and practice definitions.
+- Confirmed `.specify/extensions.yml` is absent, so no Spec Kit pre/post extension hooks apply.
+- Created branch `001-session-records` from the exact verified `master` head.
+- Created `specs/001-session-records/spec.md`.
+- Created `specs/001-session-records/checklists/requirements.md`.
+- Created `.specify/feature.json` pointing to `specs/001-session-records`.
+- Validated the specification checklist with all items passing.
+- Confirmed there are no `[NEEDS CLARIFICATION]` markers.
+- Opened PR #4.
 
-## AZ-Sync constitution invariants
+## Feature scope
 
-The ratified constitution requires:
+The first product specification is **Reproducible Session Records**.
 
-1. specification before non-trivial implementation;
-2. explicit separation of subjective experience from evidential claims;
-3. receiver logging before hidden-target reveal;
-4. reproducible experimental records;
-5. immersive UX that does not suggest or leak target answers;
-6. small, independently verifiable increments with build validation.
+It defines:
 
-## Spec Kit operating model
+- durable session and round records;
+- preservation of receiver input before hidden-target reveal;
+- explicit event ordering and participant-role context;
+- chronological history;
+- handling for incomplete/abandoned rounds;
+- portable session export;
+- separation between subjective observations, target values, and event-order metadata;
+- no account or cloud-sync requirement in this increment;
+- no statistical-significance or paranormal-evidence claims.
 
-Canonical flow:
+## Spec Kit state
 
-1. `$speckit-specify`
-2. `$speckit-clarify`
-3. `$speckit-plan`
-4. `$speckit-checklist`
-5. `$speckit-tasks`
-6. `$speckit-analyze`
-7. `$speckit-implement`
-8. `$speckit-converge`
-
-SIGA remains the verify-first continuation layer around this flow.
+- `SPECIFY_FEATURE_DIRECTORY`: `specs/001-session-records`
+- `SPEC_FILE`: `specs/001-session-records/spec.md`
+- Quality checklist: all items passing
+- Clarification markers: none
+- Ready after merge for `$speckit-clarify` or `$speckit-plan`
 
 ## Validation / gates
 
-Before this handoff-only update:
+Before this handoff update:
 
-- branch vs `master`: 1 commit ahead / 0 behind;
-- changed files: 32;
-- application/product source changes: none;
-- PR #3: open;
-- pull-request CI for the final handoff HEAD: pending re-read after this commit.
-
-Because this handoff update changes the PR head, any CI result from the previous head is historical only.
+- branch vs `master`: 3 commits ahead / 0 behind;
+- changed files: 3;
+- application/product implementation changes: none;
+- PR #4: open;
+- final pull-request CI must be re-read after this handoff commit because this file update changes the PR head.
 
 ## Exact next action
 
-1. Re-read PR #3 and its exact current head.
+1. Re-read PR #4 and its exact current head.
 2. Inspect CI for that exact head.
 3. If CI is queued/running, remain **WATCH**.
-4. If CI fails, classify **RESUME** and apply the smallest corrective change.
-5. If CI succeeds and no other required gate remains, merge PR #3 with expected-head protection.
-6. After merge, re-read `master` and classify **ADVANCE**.
-7. The next product unit after successful Spec Kit merge is to create the first repository-backed AZ-Sync product specification with `$speckit-specify`; do not start product implementation before that spec exists.
+4. If CI fails, classify **RESUME** and apply only the smallest corrective change.
+5. If CI succeeds and no review gate remains, merge PR #4 with expected-head protection.
+6. Re-read `master` after merge.
+7. Classify **ADVANCE** and run the next Spec Kit phase for `specs/001-session-records`: prefer `$speckit-clarify` for one refinement pass, then `$speckit-plan`.
 
 ## Concurrency note
 
