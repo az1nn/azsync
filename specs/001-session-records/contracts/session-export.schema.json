@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://az1nn.github.io/azsync/contracts/session-export.schema.json",
+  "title": "AZ-Sync Session Export",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "exportedAt", "disclaimer", "session"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "disclaimer": { "type": "string", "minLength": 1 },
+    "session": { "$ref": "#/$defs/session" }
+  },
+  "$defs": {
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["emitter", "receiver", "mode"],
+      "properties": {
+        "emitter": { "type": ["string", "null"] },
+        "receiver": { "type": ["string", "null"] },
+        "mode": { "enum": ["pair", "group", "solo"] }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "kind", "recordedAt"],
+      "properties": {
+        "text": { "type": "string" },
+        "kind": { "enum": ["receiver-pre-reveal", "group-note"] },
+        "recordedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "poolId", "selectionMethod"],
+      "properties": {
+        "value": { "type": "string" },
+        "poolId": { "type": "string", "minLength": 1 },
+        "selectionMethod": { "const": "uniform-random-pool" }
+      }
+    },
+    "round": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "sequence", "protocolId", "protocolMode", "status", "roles",
+        "observation", "target", "selectedAt", "responseRecordedAt",
+        "revealedAt", "completedAt", "abandonedAt", "postRevealInterpretation"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "protocolId": { "enum": ["symbol", "chromatic", "number", "group"] },
+        "protocolMode": { "enum": ["hidden-target", "group"] },
+        "status": { "enum": ["active_target_selected", "response_recorded", "revealed", "finalized", "abandoned"] },
+        "roles": { "$ref": "#/$defs/roles" },
+        "observation": {
+          "oneOf": [
+            { "$ref": "#/$defs/observation" },
+            { "type": "null" }
+          ]
+        },
+        "target": {
+          "oneOf": [
+            { "$ref": "#/$defs/target" },
+            { "type": "null" }
+          ]
+        },
+        "selectedAt": { "type": ["string", "null"], "format": "date-time" },
+        "responseRecordedAt": { "type": ["string", "null"], "format": "date-time" },
+        "revealedAt": { "type": ["string", "null"], "format": "date-time" },
+        "completedAt": { "type": ["string", "null"], "format": "date-time" },
+        "abandonedAt": { "type": ["string", "null"], "format": "date-time" },
+        "postRevealInterpretation": { "type": ["string", "null"] }
+      }
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "startedAt", "endedAt", "rounds", "notes"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": ["string", "null"], "format": "date-time" },
+        "rounds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/round" }
+        },
+        "notes": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
