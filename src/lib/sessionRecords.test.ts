@@ -1,12 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import {
   abandonRound,
+  buildSessionExport,
+  canExportSession,
   captureReceiverResponse,
+  createEmptySessionRecordStore,
   createSessionRecord,
+  finalizeGroupRound,
   finalizeHiddenTargetRound,
+  loadSessionRecordStore,
+  prepareGroupRound,
   prepareHiddenTargetRound,
   projectRoundForHistory,
+  saveSessionRecordStore,
+  serializeSessionExport,
+  upsertSessionRecord,
   type SessionRecord,
+  type StorageLike,
 } from './sessionRecords'
 
 const times = {
@@ -16,6 +26,7 @@ const times = {
   captured: '2026-10-04T12:03:00.000Z',
   revealed: '2026-10-04T12:04:00.000Z',
   abandoned: '2026-10-04T12:05:00.000Z',
+  exported: '2026-10-04T12:06:00.000Z',
 }
 
 function session(): SessionRecord {
@@ -23,6 +34,15 @@ function session(): SessionRecord {
     id: 'session-1',
     startedAt: times.start,
   })
+}
+
+function memoryStorage(): StorageLike {
+  const values = new Map<string, string>()
+  return {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+    removeItem: (key) => values.delete(key),
+  }
 }
 
 describe('session record lifecycle', () => {
@@ -141,5 +161,106 @@ describe('session record lifecycle', () => {
     expect(round.state).toBe('abandoned')
     expect(round.abandonedAt).toBe(times.abandoned)
     expect(projectRoundForHistory(round)).not.toHaveProperty('target')
+  })
+
+  it('records group practice as a targetless finalized round', () => {
+    let current = prepareGroupRound(session(), {
+      id: 'group-1',
+      protocolId: 'group',
+      protocolTitle: 'Sincronização em Grupo',
+      at: times.selected1,
+    })
+
+    expect(current.rounds[0].kind).toBe('group')
+    expect(current.rounds[0]).not.toHaveProperty('target')
+    expect(current.rounds[0]).not.toHaveProperty('targetSelectedAt')
+
+    current = finalizeGroupRound(
+      current,
+      'group-1',
+      'silêncio, calor e imagem de água',
+      times.captured,
+    )
+
+    expect(current.rounds[0].state).toBe('finalized')
+    expect(current.rounds[0].observation).toBe('silêncio, calor e imagem de água')
+    expect(projectRoundForHistory(current.rounds[0])).not.toHaveProperty('target')
+  })
+
+  it('exports Unicode, ordering and only revealed target data', () => {
+    let current = session()
+    current = prepareHiddenTargetRound(current, {
+      id: 'round-1',
+      protocolId: 'symbol',
+      protocolTitle: 'Transmissão de Símbolo',
+      targetValue: '☾',
+      at: times.selected1,
+    })
+    current = captureReceiverResponse(current, 'round-1', 'lua · água · atenção', times.captured)
+    current = finalizeHiddenTargetRound(current, 'round-1', times.revealed)
+
+    current = prepareHiddenTargetRound(current, {
+      id: 'round-2',
+      protocolId: 'number',
+      protocolTitle: 'Número Cego',
+      targetValue: '4',
+      at: times.selected2,
+    })
+    current = abandonRound(current, 'round-2', times.abandoned)
+
+    expect(canExportSession(current)).toBe(true)
+
+    const payload = buildSessionExport(current, times.exported)
+    expect(payload.schemaVersion).toBe(1)
+    expect(payload.session.rounds.map((round) => round.sequence)).toEqual([1, 2])
+    expect(payload.session.rounds[0].observation).toBe('lua · água · atenção')
+    expect(payload.session.rounds[0].target?.value).toBe('☾')
+    expect(payload.session.rounds[1]).not.toHaveProperty('target')
+    expect(payload.disclaimer).toMatch(/experiência subjetiva/i)
+
+    const serialized = serializeSessionExport(current, times.exported)
+    expect(serialized).toContain('lua · água · atenção')
+    expect(JSON.parse(serialized).session.rounds[1].target).toBeUndefined()
+  })
+
+  it('prevents misleading export when there is no finalized round', () => {
+    let current = session()
+    current = prepareHiddenTargetRound(current, {
+      id: 'round-1',
+      protocolId: 'number',
+      protocolTitle: 'Número Cego',
+      targetValue: '3',
+      at: times.selected1,
+    })
+    current = abandonRound(current, 'round-1', times.abandoned)
+
+    expect(canExportSession(current)).toBe(false)
+    expect(() => buildSessionExport(current, times.exported)).toThrow(/finalized round/i)
+  })
+
+  it('round-trips the versioned store and reports storage failures', () => {
+    const storage = memoryStorage()
+    const firstSession = session()
+    const store = upsertSessionRecord(createEmptySessionRecordStore(), firstSession)
+
+    expect(saveSessionRecordStore(store, storage).ok).toBe(true)
+    expect(loadSessionRecordStore(storage)).toEqual({ ok: true, value: store })
+
+    const failingStorage: StorageLike = {
+      getItem: () => {
+        throw new Error('storage blocked')
+      },
+      setItem: () => {
+        throw new Error('storage blocked')
+      },
+    }
+
+    const loadResult = loadSessionRecordStore(failingStorage)
+    expect(loadResult.ok).toBe(false)
+    if (!loadResult.ok) expect(loadResult.error).toMatch(/storage blocked/i)
+
+    const saveResult = saveSessionRecordStore(store, failingStorage)
+    expect(saveResult.ok).toBe(false)
+    if (!saveResult.ok) expect(saveResult.error).toMatch(/storage blocked/i)
   })
 })

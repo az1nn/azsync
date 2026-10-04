@@ -10,60 +10,65 @@ This handoff belongs only to `az1nn/azsync`.
 
 - Repository: `az1nn/azsync`
 - Default branch: `master`
-- Verified `master` HEAD before this R02 planning branch: `26ee1535ee079ddf43536acf53d8b9dd70b8c91f`
-- Active branch: `001-session-records-plan-v2`
-- R03 PR #6: merged
+- Verified `master` HEAD before PR #11: `d5d4cd047a22e922e5c8d90f0d883bf919a2f714`
+- Active branch: `001-session-records-ui-v2`
+- PR #11: `feat: persist and review experimental sessions`
+- Implementation head before this documentation update: `ca2256fa8da795987f1268a43ad6c164685d0c74`
+- CI #26 on that implementation head: tests ✅ / build ✅
 - R03 Pages blocker: issue #7
-- R03 classification: **WATCH** on external repository setting
-- R02 classification: **ADVANCE**
+- R03 classification: **WATCH**
+- R02 classification: **RESUME → exit gate**
 - Canonical roadmap: `docs/ROADMAP.md`
 
 ## Roadmap state
 
 - **R01 — Grimoire Foundation:** DONE
-- **R02 — Reproducible Session Records:** PLANNED / READY FOR IMPLEMENTATION
+- **R02 — Reproducible Session Records:** IMPLEMENTED / PR #11 / VALIDATION PENDING
 - **R03 — Alan Astral Meditation Gate:** MERGED / DEPLOYMENT BLOCKED (#7)
 - **R04 — Servitor Practice Framework:** PLANNED, blocked until R03 visual validation
 
-## R02 planning completed
+## R02 completed implementation
 
-Repository-backed artifacts now include:
+- versioned local record store and deterministic IDs
+- hidden-target lifecycle: prepared → response-captured → finalized / abandoned
+- receiver observation frozen before reveal
+- reload restoration for active rounds
+- explicit abandonment before protocol switch/new round
+- visible persistence failure warning
+- group-attention flow corrected to be targetless
+- targetless group note records
+- chronological session history
+- active/finalized/abandoned presentation
+- new-session rollover without deleting prior records
+- confirmed deletion
+- versioned UTF-8 JSON export
+- unrevealed/abandoned target sanitization in history/export
+- subjective-experience disclaimer
+- Vitest gate added to CI
+- deterministic tests + TypeScript/Vite build green on implementation head
 
-- `specs/001-session-records/spec.md`
-- `specs/001-session-records/checklists/requirements.md`
-- `specs/001-session-records/clarifications.md`
-- `specs/001-session-records/research.md`
-- `specs/001-session-records/data-model.md`
-- `specs/001-session-records/plan.md`
-- `specs/001-session-records/quickstart.md`
-- `specs/001-session-records/tasks.md`
+## R02 pending exit gate
 
-No user-facing clarification remains.
-
-## Important R02 finding
-
-The current app falls back to the symbol target pool for the group-attention practice. R02 requires group attention to be targetless. The implementation tasks explicitly correct this rather than persisting a semantically invalid target.
-
-## Next execution slice
-
-Start R02 implementation with the independently verifiable record core:
-
-1. T001 — add Vitest and an `npm test` script.
-2. T002 — implement versioned record types, storage adapter and ID helpers.
-3. T003 — implement hidden-target lifecycle transitions.
-4. T004 — implement target-safe history/export projections.
-5. T005 — add deterministic tests for ordering, response freezing, reveal gating, abandonment and target hiding.
-6. Run tests + build + exact-head CI before integrating the UI.
+1. Let CI pass on the exact final PR #11 documentation head.
+2. Merge PR #11.
+3. Run the interactive scenarios in `specs/001-session-records/quickstart.md`.
+4. Mark T026/T027 and R02 DONE only after those checks.
 
 ## R03 continuation
 
-If Pages is enabled at any reconciliation point, R03 immediately regains priority:
-- rerun Pages deployment;
-- validate Alan Astral desktop/mobile;
-- only then mark R03 DONE.
+GitHub Pages remains disabled/unavailable to the workflow. Issue #7 is still the external blocker. If Pages is enabled at any reconciliation point, R03 regains priority for deployment + Alan Astral desktop/mobile visual validation.
 
-R04 remains blocked until that R03 visual validation is complete.
+## R04 rule
+
+Do not begin R04 until R03 has passed deployed visual validation.
+
+## Exact next action
+
+- Verify exact-head CI for PR #11.
+- Merge if green and mergeable.
+- Attempt R02 interactive/deployment validation if a runnable surface exists.
+- Otherwise persist the validation blocker and stop at WATCH rather than claiming DONE.
 
 ## Concurrency note
 
-All SHAs are point-in-time observations. Re-read refs before mutation. Never assume CI or deployment state from an older head.
+All SHAs are point-in-time observations. Re-read refs before mutation.

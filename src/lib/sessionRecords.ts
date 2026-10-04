@@ -1,4 +1,6 @@
 export const SESSION_RECORDS_STORAGE_KEY = 'azsync.session-records.v1'
+export const SESSION_RECORDS_DISCLAIMER =
+  'Registro experimental de experiência subjetiva; não constitui evidência de telepatia, transmissão paranormal ou mecanismo equivalente.'
 
 export type RoundKind = 'hidden-target' | 'group'
 export type RoundState = 'prepared' | 'response-captured' | 'finalized' | 'abandoned'
@@ -51,6 +53,13 @@ export type VisibleSessionRecord = Omit<SessionRecord, 'rounds'> & {
   rounds: VisibleRoundRecord[]
 }
 
+export type ExportedSessionRecord = {
+  schemaVersion: 1
+  exportedAt: string
+  session: VisibleSessionRecord
+  disclaimer: string
+}
+
 export type StorageLike = {
   getItem(key: string): string | null
   setItem(key: string, value: string): void
@@ -72,6 +81,13 @@ type PrepareHiddenTargetInput = {
   protocolTitle: string
   targetValue: string
   roles?: string[]
+  at?: string
+}
+
+type PrepareGroupInput = {
+  id?: string
+  protocolId: string
+  protocolTitle: string
   at?: string
 }
 
@@ -105,6 +121,70 @@ export function createSessionRecord(options: SessionOptions = {}): SessionRecord
   }
 }
 
+export function getActiveSession(store: SessionRecordStore) {
+  if (!store.activeSessionId) return null
+  return store.sessions.find((session) => session.id === store.activeSessionId) ?? null
+}
+
+export function getOpenRound(session: SessionRecord | null | undefined) {
+  if (!session) return null
+  return (
+    [...session.rounds]
+      .reverse()
+      .find((round) => round.state === 'prepared' || round.state === 'response-captured') ?? null
+  )
+}
+
+export function upsertSessionRecord(
+  store: SessionRecordStore,
+  session: SessionRecord,
+  makeActive = true,
+): SessionRecordStore {
+  const existingIndex = store.sessions.findIndex((item) => item.id === session.id)
+  const sessions =
+    existingIndex === -1
+      ? [...store.sessions, session]
+      : store.sessions.map((item) => (item.id === session.id ? session : item))
+
+  return {
+    ...store,
+    activeSessionId: makeActive ? session.id : store.activeSessionId,
+    sessions,
+  }
+}
+
+export function completeActiveSession(
+  store: SessionRecordStore,
+  at = nowIso(),
+): SessionRecordStore {
+  const active = getActiveSession(store)
+  if (!active) {
+    return { ...store, activeSessionId: null }
+  }
+
+  const completed: SessionRecord = {
+    ...active,
+    status: 'completed',
+    endedAt: at,
+  }
+
+  return {
+    ...upsertSessionRecord(store, completed, false),
+    activeSessionId: null,
+  }
+}
+
+export function deleteSessionRecord(
+  store: SessionRecordStore,
+  sessionId: string,
+): SessionRecordStore {
+  return {
+    ...store,
+    activeSessionId: store.activeSessionId === sessionId ? null : store.activeSessionId,
+    sessions: store.sessions.filter((session) => session.id !== sessionId),
+  }
+}
+
 export function prepareHiddenTargetRound(
   session: SessionRecord,
   input: PrepareHiddenTargetInput,
@@ -124,6 +204,28 @@ export function prepareHiddenTargetRound(
       value: input.targetValue,
       selectionMethod: 'client-random-pool',
     },
+  }
+
+  return {
+    ...session,
+    rounds: [...session.rounds, round],
+  }
+}
+
+export function prepareGroupRound(
+  session: SessionRecord,
+  input: PrepareGroupInput,
+): SessionRecord {
+  const at = input.at ?? nowIso()
+  const round: RoundRecord = {
+    id: input.id ?? createRecordId('round'),
+    sequence: session.rounds.length + 1,
+    protocolId: input.protocolId,
+    protocolTitle: input.protocolTitle,
+    kind: 'group',
+    state: 'prepared',
+    roles: ['participant'],
+    createdAt: at,
   }
 
   return {
@@ -214,6 +316,40 @@ export function finalizeHiddenTargetRound(
   })
 }
 
+export function finalizeGroupRound(
+  session: SessionRecord,
+  roundId: string,
+  observation: string,
+  at = nowIso(),
+): SessionRecord {
+  const normalized = observation.trim()
+  if (!normalized) {
+    throw new Error('Group practice notes cannot be empty.')
+  }
+
+  return replaceRound(session, roundId, (round) => {
+    if (round.kind !== 'group') {
+      throw new Error('Only group rounds use group finalization.')
+    }
+
+    if (round.state !== 'prepared') {
+      throw new Error(`Cannot finalize group round from state: ${round.state}`)
+    }
+
+    if (round.target) {
+      throw new Error('Group rounds cannot contain hidden target data.')
+    }
+
+    return {
+      ...round,
+      state: 'finalized',
+      observation: normalized,
+      responseCapturedAt: at,
+      completedAt: at,
+    }
+  })
+}
+
 export function abandonRound(
   session: SessionRecord,
   roundId: string,
@@ -238,7 +374,7 @@ export function abandonRound(
 }
 
 export function projectRoundForHistory(round: RoundRecord): VisibleRoundRecord {
-  if (round.state === 'finalized') {
+  if (round.state === 'finalized' && round.kind === 'hidden-target') {
     return {
       ...round,
       target: round.target ? { ...round.target } : undefined,
@@ -258,6 +394,33 @@ export function projectSessionForHistory(session: SessionRecord): VisibleSession
 
 export function projectSessionForExport(session: SessionRecord): VisibleSessionRecord {
   return projectSessionForHistory(session)
+}
+
+export function canExportSession(session: SessionRecord) {
+  return session.rounds.some((round) => round.state === 'finalized')
+}
+
+export function buildSessionExport(
+  session: SessionRecord,
+  exportedAt = nowIso(),
+): ExportedSessionRecord {
+  if (!canExportSession(session)) {
+    throw new Error('A session needs at least one finalized round before export.')
+  }
+
+  return {
+    schemaVersion: 1,
+    exportedAt,
+    session: projectSessionForExport(session),
+    disclaimer: SESSION_RECORDS_DISCLAIMER,
+  }
+}
+
+export function serializeSessionExport(
+  session: SessionRecord,
+  exportedAt = nowIso(),
+) {
+  return JSON.stringify(buildSessionExport(session, exportedAt), null, 2)
 }
 
 function getDefaultStorage(): StorageLike {
