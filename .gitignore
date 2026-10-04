@@ -3,3 +3,7 @@ dist
 .vite
 *.tsbuildinfo
 .DS_Store
+*.log
+.env*
+.vscode/
+.idea/
