@@ -4,11 +4,11 @@
 
 ## Phase 1 — Record foundation
 
-- [ ] T001 [P] Add Vitest and `npm test` configuration in `package.json`.
-- [ ] T002 [US1] Implement versioned types, storage adapter and ID helpers in `src/lib/sessionRecords.ts`.
-- [ ] T003 [US1] Implement pure hidden-target lifecycle transitions: prepare → response-captured → finalized / abandoned.
-- [ ] T004 [US1] Implement target-safe history/export projections in `src/lib/sessionRecords.ts`.
-- [ ] T005 [P] [US1] Add deterministic tests in `src/lib/sessionRecords.test.ts` for ordering, response freezing, reveal gating, abandonment and target hiding.
+- [x] T001 [P] Add Vitest and `npm test` configuration in `package.json`.
+- [x] T002 [US1] Implement versioned types, storage adapter and ID helpers in `src/lib/sessionRecords.ts`.
+- [x] T003 [US1] Implement pure hidden-target lifecycle transitions: prepare → response-captured → finalized / abandoned.
+- [x] T004 [US1] Implement target-safe history/export projections in `src/lib/sessionRecords.ts`.
+- [x] T005 [P] [US1] Add deterministic tests in `src/lib/sessionRecords.test.ts` for ordering, response freezing, reveal gating, abandonment and target hiding.
 
 ## Phase 2 — Durable hidden-target flow
 
