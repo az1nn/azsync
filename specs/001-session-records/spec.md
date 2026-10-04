@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-24
 
-**Status**: Implemented / Awaiting Merge and Interactive Validation
+**Status**: Merged / Interactive Validation Blocked by Pages (#7)
 
 **Input**: User description: "Create the first repository-backed AZ-Sync product specification after Spec Kit bootstrap. Close the gap between the existing blind-target practice flow and the constitution requirement for reproducible experimental records by preserving session and round records without presenting subjective results as evidence of paranormal transmission."
 
