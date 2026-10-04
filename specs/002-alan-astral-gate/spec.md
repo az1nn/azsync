@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-alan-astral-gate`  
 **Created**: 2026-10-03  
-**Status**: Implemented / Awaiting Merge
+**Status**: Implemented / Merged / Deployment Blocked (#7)
 
 ## Intent
 

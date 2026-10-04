@@ -22,10 +22,10 @@
 ## Phase 4 — Verification
 
 - [x] T009 Run PR build gate with `npm run build`.
-- [ ] T010 Merge PR #6 only after its exact current head is green and mergeable.
-- [ ] T011 Verify post-merge GitHub Pages deployment.
+- [x] T010 Merge PR #6 after exact-head CI success. Merged as `7ff30e1acbe9e07c9c4baf5adce22a33c2b58d08`.
+- [ ] T011 Verify post-merge GitHub Pages deployment. **BLOCKED by issue #7:** repository Pages site is not enabled; build succeeds but `configure-pages` cannot create the site with the workflow integration.
 - [ ] T012 Perform deployed visual/mobile validation of idle → active → close and record any corrective task before R03 is marked DONE.
 
 ## Exit Gate
 
-R03 becomes **DONE** only when T010–T012 are complete. Until then SIGA must prioritize this exit gate over R04.
+R03 becomes **DONE** only when T010–T012 are complete. While T011 is externally blocked by repository Pages enablement, SIGA may advance R02 clarification/planning, but R04 remains blocked.
