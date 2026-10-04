@@ -18,7 +18,7 @@ This file is the canonical product roadmap for Spec Kit work in `az1nn/azsync`.
 ## R02 — Reproducible Session Records
 
 **Spec:** `specs/001-session-records/spec.md`  
-**Status:** SPECIFIED / IMPLEMENTATION PENDING
+**Status:** PLANNED / READY FOR IMPLEMENTATION
 
 Outcome:
 - durable session and round records
@@ -28,7 +28,9 @@ Outcome:
 - portable export
 - strict separation of observations, target data and interpretation
 
-**Next Spec Kit phase:** `$speckit-clarify` → `$speckit-plan` → tasks → implementation.
+**Spec Kit:** clarification ✅ → research/data model ✅ → plan ✅ → tasks ✅
+
+**Next phase:** implementation, beginning with the tested record core (T001–T005).
 
 ## R03 — Alan Astral Meditation Gate
 
