@@ -33,7 +33,7 @@ Outcome:
 ## R03 — Alan Astral Meditation Gate
 
 **Spec:** `specs/002-alan-astral-gate/spec.md`  
-**Status:** IMPLEMENTED / PR #6
+**Status:** MERGED / DEPLOYMENT BLOCKED — issue #7
 
 Outcome:
 - visual meditation gate for Alan Astral
@@ -48,7 +48,9 @@ Outcome:
 **Activation:** “Bom dia Alan” / “Boa tarde Alan” / “Boa noite Alan” by local daypart.  
 **Closing:** “obrigado Alan, é para isso que você existe”.
 
-**Exit gate:** PR CI green → merge → Pages deployment → visual/mobile verification.
+**Exit gate:** PR CI green ✅ → merge ✅ → Pages enablement/deployment ⏳ → visual/mobile verification ⏳.
+
+**Blocker:** GitHub Pages is not enabled for the repository. Workflow run #7 built successfully but `actions/configure-pages@v5` could not create the Pages site because the workflow integration lacks repository-admin permission. Tracked in issue #7.
 
 ## R04 — Servitor Practice Framework
 
@@ -68,6 +70,6 @@ Candidate scope:
 
 ## Priority
 
-1. Finish R03 exit gate.
-2. Resume R02 implementation planning.
+1. Finish R03 exit gate as soon as Pages is enabled.
+2. While R03 is blocked only by repository Pages enablement, R02 clarification/planning may advance in parallel.
 3. Specify R04 only after R03 is validated in the deployed UI.
