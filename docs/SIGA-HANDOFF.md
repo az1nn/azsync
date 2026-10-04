@@ -10,53 +10,59 @@ This handoff belongs only to `az1nn/azsync`.
 
 - Repository: `az1nn/azsync`
 - Default branch: `master`
-- Verified `master` HEAD: `7ff30e1acbe9e07c9c4baf5adce22a33c2b58d08`
-- PR #6: merged successfully
-- Exact PR head CI #21: success
-- Post-merge Pages workflow #7: failed
-- Build inside Pages workflow: success
-- Failure step: `actions/configure-pages@v5`
-- Root cause: Pages site not enabled; workflow integration cannot create it (`Resource not accessible by integration`)
-- Tracking issue: #7
-- Current classification: **WATCH** on R03 external repository setting
+- Verified `master` HEAD before this R02 planning branch: `26ee1535ee079ddf43536acf53d8b9dd70b8c91f`
+- Active branch: `001-session-records-plan-v2`
+- R03 PR #6: merged
+- R03 Pages blocker: issue #7
+- R03 classification: **WATCH** on external repository setting
+- R02 classification: **ADVANCE**
 - Canonical roadmap: `docs/ROADMAP.md`
 
 ## Roadmap state
 
 - **R01 — Grimoire Foundation:** DONE
-- **R02 — Reproducible Session Records:** SPECIFIED / IMPLEMENTATION PENDING
+- **R02 — Reproducible Session Records:** PLANNED / READY FOR IMPLEMENTATION
 - **R03 — Alan Astral Meditation Gate:** MERGED / DEPLOYMENT BLOCKED (#7)
 - **R04 — Servitor Practice Framework:** PLANNED, blocked until R03 visual validation
 
-## R03 completed
+## R02 planning completed
 
-- Spec, plan, tasks, roadmap integration
-- Alan Astral idle/active visual gate
-- main Three.js field synchronization
-- local MP3/WAV support
-- loop + volume controls
-- stop/reset on closing
-- reduced-motion behavior
-- exact-head CI green
-- PR #6 merged to `master`
+Repository-backed artifacts now include:
 
-## R03 pending
+- `specs/001-session-records/spec.md`
+- `specs/001-session-records/checklists/requirements.md`
+- `specs/001-session-records/clarifications.md`
+- `specs/001-session-records/research.md`
+- `specs/001-session-records/data-model.md`
+- `specs/001-session-records/plan.md`
+- `specs/001-session-records/quickstart.md`
+- `specs/001-session-records/tasks.md`
 
-1. Enable GitHub Pages for `az1nn/azsync` with **GitHub Actions** as deployment source (issue #7).
-2. Rerun/trigger Pages deployment.
-3. Verify deployment success.
-4. Validate deployed desktop/mobile idle → active → close flow.
-5. Mark R03 DONE only after visual validation.
+No user-facing clarification remains.
 
-## Continuation rule while blocked
+## Important R02 finding
 
-R03 remains the highest-priority exit gate, but the blocker is repository configuration outside the current connector's supported mutations. While waiting for that setting, SIGA may **ADVANCE R02 clarification/planning** so the repository does not idle. R04 must not start before R03 visual validation.
+The current app falls back to the symbol target pool for the group-attention practice. R02 requires group attention to be targetless. The implementation tasks explicitly correct this rather than persisting a semantically invalid target.
 
-## Exact next action
+## Next execution slice
 
-- If Pages has been enabled: rerun deployment and finish R03.
-- If Pages is still disabled: continue R02 with one clarification pass and implementation planning.
-- Never mark R03 DONE based only on a successful build.
+Start R02 implementation with the independently verifiable record core:
+
+1. T001 — add Vitest and an `npm test` script.
+2. T002 — implement versioned record types, storage adapter and ID helpers.
+3. T003 — implement hidden-target lifecycle transitions.
+4. T004 — implement target-safe history/export projections.
+5. T005 — add deterministic tests for ordering, response freezing, reveal gating, abandonment and target hiding.
+6. Run tests + build + exact-head CI before integrating the UI.
+
+## R03 continuation
+
+If Pages is enabled at any reconciliation point, R03 immediately regains priority:
+- rerun Pages deployment;
+- validate Alan Astral desktop/mobile;
+- only then mark R03 DONE.
+
+R04 remains blocked until that R03 visual validation is complete.
 
 ## Concurrency note
 
