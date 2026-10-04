@@ -10,6 +10,7 @@ AZ-Sync uses GitHub Spec Kit **v1.0.11** with the official **Codex skills layout
 - `.specify/workflows/speckit/workflow.yml` — bundled SDD workflow
 - `.agents/skills/speckit-*/SKILL.md` — Codex-compatible Spec Kit skills
 - `specs/` — feature specifications created by the workflow
+- `docs/ROADMAP.md` — canonical product sequence, milestone state, and next Spec Kit phase
 
 ## Project workflow
 
@@ -25,6 +26,8 @@ Use the complete path for production-facing work:
 8. `$speckit-converge`
 
 The constitution is already ratified for AZ-Sync. Run `$speckit-constitution` only when governance itself needs amendment.
+
+Before creating or advancing a feature, reconcile it against `docs/ROADMAP.md`. New scope must either map to an existing roadmap item or update the roadmap in the same change. The roadmap never replaces a feature spec; it only establishes sequence and state.
 
 ## CLI
 
