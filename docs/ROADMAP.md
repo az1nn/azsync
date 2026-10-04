@@ -18,7 +18,7 @@ This file is the canonical product roadmap for Spec Kit work in `az1nn/azsync`.
 ## R02 — Reproducible Session Records
 
 **Spec:** `specs/001-session-records/spec.md`  
-**Status:** IMPLEMENTED / PR #11 / VALIDATION PENDING
+**Status:** MERGED / INTERACTIVE VALIDATION BLOCKED — issue #7
 
 Outcome:
 - durable session and round records
@@ -30,7 +30,11 @@ Outcome:
 
 **Spec Kit:** clarification ✅ → research/data model ✅ → plan ✅ → tasks ✅
 
-**Implementation:** record core ✅ → durable flow ✅ → targetless group ✅ → history ✅ → JSON export ✅ → tests/build ✅\n\n**Exit gate:** merge PR #11 → interactive quickstart validation. Deployment-based validation remains constrained by the shared GitHub Pages blocker (#7).
+**Implementation:** record core ✅ → durable flow ✅ → targetless group ✅ → history ✅ → JSON export ✅ → tests/build ✅
+
+**Exit gate:** exact-head CI ✅ → merge ✅ → interactive quickstart validation ⏳.
+
+**Blocker:** the shared GitHub Pages issue #7 prevents publication of a runnable surface. Post-merge build succeeds, but `actions/configure-pages@v5` cannot configure a Pages site until repository Pages is enabled.
 
 ## R03 — Alan Astral Meditation Gate
 
@@ -72,6 +76,6 @@ Candidate scope:
 
 ## Priority
 
-1. Finish R03 exit gate as soon as Pages is enabled.
-2. While R03 is blocked only by repository Pages enablement, R02 clarification/planning may advance in parallel.
-3. Specify R04 only after R03 is validated in the deployed UI.
+1. Enable GitHub Pages and finish the deployed validation gates for R03 and R02.
+2. Keep R02 and R03 in WATCH while issue #7 is unresolved.
+3. Start R04 only after R03 passes deployed visual validation.

@@ -10,65 +10,69 @@ This handoff belongs only to `az1nn/azsync`.
 
 - Repository: `az1nn/azsync`
 - Default branch: `master`
-- Verified `master` HEAD before PR #11: `d5d4cd047a22e922e5c8d90f0d883bf919a2f714`
-- Active branch: `001-session-records-ui-v2`
-- PR #11: `feat: persist and review experimental sessions`
-- Implementation head before this documentation update: `ca2256fa8da795987f1268a43ad6c164685d0c74`
-- CI #26 on that implementation head: tests ✅ / build ✅
-- R03 Pages blocker: issue #7
+- Verified `master` HEAD before this documentation branch: `087ce8bba7ad1ef42960ccd15e157ad40417b82f`
+- PR #11: merged successfully
+- Exact final PR #11 head: `8aeaa5c724a37c7f1b31390d92254c29a2957aa5`
+- Exact-head CI #28: tests ✅ / build ✅
+- Post-merge Pages run #11: application build ✅ / `actions/configure-pages@v5` ❌
+- Shared Pages blocker: issue #7
+- R02 classification: **WATCH**
 - R03 classification: **WATCH**
-- R02 classification: **RESUME → exit gate**
 - Canonical roadmap: `docs/ROADMAP.md`
 
 ## Roadmap state
 
 - **R01 — Grimoire Foundation:** DONE
-- **R02 — Reproducible Session Records:** IMPLEMENTED / PR #11 / VALIDATION PENDING
-- **R03 — Alan Astral Meditation Gate:** MERGED / DEPLOYMENT BLOCKED (#7)
-- **R04 — Servitor Practice Framework:** PLANNED, blocked until R03 visual validation
+- **R02 — Reproducible Session Records:** MERGED / INTERACTIVE VALIDATION BLOCKED (#7)
+- **R03 — Alan Astral Meditation Gate:** MERGED / DEPLOYMENT + VISUAL VALIDATION BLOCKED (#7)
+- **R04 — Servitor Practice Framework:** PLANNED / BLOCKED until R03 deployed validation
 
-## R02 completed implementation
+## R02 completed
 
-- versioned local record store and deterministic IDs
-- hidden-target lifecycle: prepared → response-captured → finalized / abandoned
-- receiver observation frozen before reveal
-- reload restoration for active rounds
-- explicit abandonment before protocol switch/new round
-- visible persistence failure warning
-- group-attention flow corrected to be targetless
-- targetless group note records
+- Spec Kit clarification, research, data model, plan, quickstart and task decomposition
+- versioned local session/round storage
+- receiver response captured and frozen before hidden-target reveal
+- active round restoration after reload
+- explicit abandonment before protocol changes
+- storage-failure warning
+- targetless group-attention records
 - chronological session history
-- active/finalized/abandoned presentation
-- new-session rollover without deleting prior records
-- confirmed deletion
+- active/finalized/abandoned state distinction
+- new-session rollover and confirmed deletion
 - versioned UTF-8 JSON export
-- unrevealed/abandoned target sanitization in history/export
+- unrevealed/abandoned target sanitization
 - subjective-experience disclaimer
-- Vitest gate added to CI
-- deterministic tests + TypeScript/Vite build green on implementation head
+- Vitest test gate in CI
+- deterministic tests and production build green
+- PR #11 merged to `master`
 
-## R02 pending exit gate
+## R02 remaining
 
-1. Let CI pass on the exact final PR #11 documentation head.
-2. Merge PR #11.
-3. Run the interactive scenarios in `specs/001-session-records/quickstart.md`.
-4. Mark T026/T027 and R02 DONE only after those checks.
+- T027 only: interactive validation of `specs/001-session-records/quickstart.md`.
+- This requires a runnable browser surface. The intended GitHub Pages surface cannot be published until issue #7 is resolved.
 
-## R03 continuation
+## Shared blocker #7
 
-GitHub Pages remains disabled/unavailable to the workflow. Issue #7 is still the external blocker. If Pages is enabled at any reconciliation point, R03 regains priority for deployment + Alan Astral desktop/mobile visual validation.
+GitHub Pages is not enabled for this repository.
 
-## R04 rule
+Observed repeatedly after successful builds:
+- `actions/configure-pages@v5` cannot find the Pages site;
+- its attempt to create one fails with `Resource not accessible by integration`.
 
-Do not begin R04 until R03 has passed deployed visual validation.
+This connector does not expose the repository-admin mutation required to enable Pages.
 
 ## Exact next action
 
-- Verify exact-head CI for PR #11.
-- Merge if green and mergeable.
-- Attempt R02 interactive/deployment validation if a runnable surface exists.
-- Otherwise persist the validation blocker and stop at WATCH rather than claiming DONE.
+A repository admin must enable **GitHub Pages** with **GitHub Actions** as the deployment source.
+
+After that:
+1. trigger or rerun the Pages deployment;
+2. verify the published AZ-Sync surface;
+3. run R03 Alan Astral desktop/mobile idle → active → close validation;
+4. run the R02 quickstart scenarios, including reload persistence, abandonment, targetless group flow, history and JSON export;
+5. mark R02/R03 DONE if those validations pass;
+6. only then ADVANCE to R04.
 
 ## Concurrency note
 
-All SHAs are point-in-time observations. Re-read refs before mutation.
+All SHAs are point-in-time observations. Re-read refs before every mutation. Do not infer deployment readiness from a successful build alone.

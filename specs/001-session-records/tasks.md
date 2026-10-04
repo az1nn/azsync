@@ -44,8 +44,8 @@
 - [x] T023 Run `npm test` and fix deterministic regressions.
 - [x] T024 Run `npm run build`.
 - [x] T025 Open implementation PR and verify exact-head CI.
-- [ ] T026 Merge only after green gates.
-- [ ] T027 Validate the scenarios in `quickstart.md`.
+- [x] T026 Merge only after green gates. PR #11 merged after exact-head CI #28 passed tests and build.
+- [ ] T027 Validate the scenarios in `quickstart.md`. **BLOCKED by issue #7:** GitHub Pages is not enabled, so the post-merge workflow builds successfully but cannot publish a runnable surface for interactive validation.
 
 ## Dependencies
 
