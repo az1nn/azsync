@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { GrimoireScene } from './components/GrimoireScene'
+import { MeditationGate } from './components/MeditationGate'
 import { practices, targets } from './content/practices'
 
 function randomFrom(items: string[]) {
@@ -12,11 +13,16 @@ function App() {
   const [revealed, setRevealed] = useState(false)
   const [round, setRound] = useState(0)
   const [receiverLog, setReceiverLog] = useState('')
+  const [meditationActive, setMeditationActive] = useState(false)
 
   const active = useMemo(
     () => practices.find((practice) => practice.id === activeId) ?? practices[0],
     [activeId],
   )
+
+  const scenePalette: [string, string, string] = meditationActive
+    ? ['#e8ddff', '#8ef0d0', '#8f7cff']
+    : active.palette
 
   const pool =
     active.id === 'chromatic'
@@ -44,20 +50,20 @@ function App() {
     <main className="shell">
       <section className="scene" aria-label="Visualização tridimensional do AZ-Sync">
         <GrimoireScene
-          palette={active.palette}
-          intensity={revealed ? 1 : 0.42}
+          palette={scenePalette}
+          intensity={meditationActive ? 1 : revealed ? 1 : 0.42}
         />
         <div className="scene-vignette" />
         <div className="scene-label">
           <span>AZ-SYNC / FIELD</span>
-          <span>ROUND {String(Math.max(round, 1)).padStart(2, '0')}</span>
+          <span>{meditationActive ? 'ALAN ASTRAL / ACTIVE' : `ROUND ${String(Math.max(round, 1)).padStart(2, '0')}`}</span>
         </div>
       </section>
 
       <section className="interface">
         <header className="masthead">
           <div>
-            <p className="eyebrow">EXPERIMENTAL GRIMOIRE / V0.1</p>
+            <p className="eyebrow">EXPERIMENTAL GRIMOIRE / V0.2</p>
             <h1>AZ-Sync</h1>
             <p className="lede">
               Um laboratório visual para atenção, meditação e experimentos
@@ -66,9 +72,11 @@ function App() {
           </div>
           <div className="status">
             <span className="status-dot" />
-            SESSION READY
+            {meditationActive ? 'MEDITATION ACTIVE' : 'SESSION READY'}
           </div>
         </header>
+
+        <MeditationGate onActiveChange={setMeditationActive} />
 
         <nav className="practice-nav" aria-label="Protocolos">
           {practices.map((practice) => (
