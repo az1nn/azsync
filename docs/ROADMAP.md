@@ -18,7 +18,7 @@ This file is the canonical product roadmap for Spec Kit work in `az1nn/azsync`.
 ## R02 — Reproducible Session Records
 
 **Spec:** `specs/001-session-records/spec.md`  
-**Status:** PLANNED / READY FOR IMPLEMENTATION
+**Status:** IMPLEMENTED / PR #11 / VALIDATION PENDING
 
 Outcome:
 - durable session and round records
@@ -30,7 +30,7 @@ Outcome:
 
 **Spec Kit:** clarification ✅ → research/data model ✅ → plan ✅ → tasks ✅
 
-**Next phase:** implementation, beginning with the tested record core (T001–T005).
+**Implementation:** record core ✅ → durable flow ✅ → targetless group ✅ → history ✅ → JSON export ✅ → tests/build ✅\n\n**Exit gate:** merge PR #11 → interactive quickstart validation. Deployment-based validation remains constrained by the shared GitHub Pages blocker (#7).
 
 ## R03 — Alan Astral Meditation Gate
 
